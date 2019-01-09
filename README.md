@@ -11,7 +11,7 @@ It uses samtools,the pyteomics and biopython packages.
 The following flowchart summarizes the steps for the creation of the proteogenomic database from Pool-seq.
 
 
-<img src="https://github.com/RigbeGW/PoolseqVariantdb/blob/master/variantdbFlowchart.png" width="473" height="811">
+<img src="https://github.com/RigbeGW/poolseq_variantdb/blob/master/variantdbFlowchart.png" width="473" height="811">
 
 The script can be invoked from the command line as:
 
