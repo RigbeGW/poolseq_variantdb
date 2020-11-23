@@ -7,7 +7,7 @@ import re
 
 from pyteomics import fasta
 
-from PoolSeqProGen import dnaSeq
+from PoolSeqProGen import dna_seq
 
 
 __author__ = "Rigbe G. Weldatsadik"
@@ -17,7 +17,7 @@ __version__ = "0.0.1"
 
 
 
-def WriteWtPro_ReturnWtPep(k, seq_entry,gbk_file,fastaOutput,poolID):
+def writewtpro_returnwtpep(k, seq_entry,gbk_file,fastaOutput,poolID):
     '''
     Writes the sequences of the 'wild type' proteins to the fasta output and
     returns the tryptic peptides of the 'wild type' protein.
@@ -25,10 +25,10 @@ def WriteWtPro_ReturnWtPep(k, seq_entry,gbk_file,fastaOutput,poolID):
 
     entries = []
 
-    '''protein_id_cds_index=dnaSeq.index_genbank_features(gbk_file,"CDS",
+    '''protein_id_cds_index=dna_seq.index_genbank_features(gbk_file,"CDS",
                                                 "protein_id")'''
 
-    protein_id_cds_index = dnaSeq.index_genbank_features(gbk_file, "CDS",
+    protein_id_cds_index = dna_seq.index_genbank_features(gbk_file, "CDS",
                                                   "locus_tag")
 
     index = protein_id_cds_index[k]
@@ -57,15 +57,15 @@ def WriteWtPro_ReturnWtPep(k, seq_entry,gbk_file,fastaOutput,poolID):
         return (seq_entry, peptide_list_org)
 
 
-def ReturnVarPep(k,v,gbk_file,gbk_fileSeq,geneticCodeID):
+def return_varpep(k,v,gbk_file,gbk_fileSeq,geneticCodeID):
     '''
     Returns the variant peptides to be written to the fasta output
     '''
 
-    '''protein_id_cds_index=dnaSeq.index_genbank_features(gbk_file,"CDS",\
+    '''protein_id_cds_index=dna_seq.index_genbank_features(gbk_file,"CDS",\
                                                 "protein_id")'''
 
-    protein_id_cds_index = dnaSeq.index_genbank_features(gbk_file, "CDS",
+    protein_id_cds_index = dna_seq.index_genbank_features(gbk_file, "CDS",
                                                   "locus_tag")
 
     index = protein_id_cds_index[k]
@@ -113,7 +113,7 @@ def ReturnVarPep(k,v,gbk_file,gbk_fileSeq,geneticCodeID):
                 # checking deletion range list first since if that particular
                 # position has been deleted, it doesn't make sense to
                 # insert there
-                in_del = dnaSeq.check_if_in_del(pos_relativeto_cds, del_range_list)
+                in_del = dna_seq.check_if_in_del(pos_relativeto_cds, del_range_list)
 
                 if in_del == "True":
                     modified = False
@@ -123,7 +123,7 @@ def ReturnVarPep(k,v,gbk_file,gbk_fileSeq,geneticCodeID):
                 else:
                     pos_relativeto_cds = in_del
 
-                pos_relativeto_cds = dnaSeq.check_if_in_ins(
+                pos_relativeto_cds = dna_seq.check_if_in_ins(
                     pos_relativeto_cds, ins_range_list)
 
                 # adding len(ref) to the last indices in both the insertion
@@ -155,7 +155,7 @@ def ReturnVarPep(k,v,gbk_file,gbk_fileSeq,geneticCodeID):
                     modified = True
 
             else:  # deletion
-                in_del = dnaSeq.check_if_in_del(pos_relativeto_cds, del_range_list)
+                in_del = dna_seq.check_if_in_del(pos_relativeto_cds, del_range_list)
 
                 if in_del == "True":
                     modified = False
@@ -167,7 +167,7 @@ def ReturnVarPep(k,v,gbk_file,gbk_fileSeq,geneticCodeID):
 
                     pos_relativeto_cds = in_del
 
-                pos_relativeto_cds = dnaSeq.check_if_in_ins(
+                pos_relativeto_cds = dna_seq.check_if_in_ins(
                     pos_relativeto_cds, ins_range_list)
 
                 del_range_list.append(range(pos_relativeto_cds + len(alt_allele),
@@ -192,7 +192,7 @@ def ReturnVarPep(k,v,gbk_file,gbk_fileSeq,geneticCodeID):
                     initial = loc.start  # since there is a nt at loc.start of the cds
                 else:
                     initial = loc.start + 1
-                start_index, last_index = dnaSeq.check_stopcodon_index_backward(
+                start_index, last_index = dna_seq.check_stopcodon_index_backward(
                     initial,gbk_fileSeq,geneticCodeID)
 
                 # the +1 since from the backward the indices are 1-based rather
@@ -205,7 +205,7 @@ def ReturnVarPep(k,v,gbk_file,gbk_fileSeq,geneticCodeID):
             else:
                 cur_pos = len(mut_cds_seq) % 3
                 initial = loc.end - cur_pos
-                start_index, last_index = dnaSeq.check_stopcodon_index_forward(
+                start_index, last_index = dna_seq.check_stopcodon_index_forward(
                     initial,gbk_fileSeq,geneticCodeID)
 
                 lengthmodified_cds_seq = mut_cds_seq + gbk_fileSeq[loc.end:last_index]

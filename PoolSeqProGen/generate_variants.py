@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 '''
 Module for creating the Pool-seq based variant proteome database.
-It imports the varReads,dnaSeq and pepFasta modules from the PoolSeqProGen package.
+It imports the var_reads,dna_seq and pep_fasta modules from the PoolSeqProGen package.
 '''
 
 import argparse
@@ -15,9 +15,9 @@ from pyteomics import fasta
 
 import pysam
 
-from PoolSeqProGen import varReads
-from PoolSeqProGen import dnaSeq
-from PoolSeqProGen import pepFasta
+from PoolSeqProGen import var_reads
+from PoolSeqProGen import dna_seq
+from PoolSeqProGen import pep_fasta
 
 csv.field_size_limit(sys.maxsize)
 
@@ -68,7 +68,6 @@ def main():
         for row in SnpEff_text:
             var_pos = row['POS']
             ref = row['REF']
-            genotype = row['EFF[*].GT']
             alt = row['EFF[*].GT']
             protein_id = row['EFF[*].TRID']  
             if protein_id not in pr_withVars:
@@ -96,7 +95,7 @@ def main():
         for_read_retrieval_pos = []
 
         try:
-            (seq_entry, org_peptide_list) = pepFasta.WriteWtPro_ReturnWtPep(key,seq_entry,gbk_file,args.fastaFile,args.poolID)
+            (seq_entry, org_peptide_list) = pep_fasta.writewtpro_returnwtpep(key,seq_entry,gbk_file,args.fastaFile,args.poolID)
         except TypeError:
             pass
 
@@ -128,13 +127,13 @@ def main():
                 # (var_pos,alt,ref,len(diff),snp,effect)
                 for_read_comparison_allinfo.append(
                     (int(k), v[3], v[2], len(v[3]) - len(v[2]), 'snp', v[0]))
-        vars_in_aread = varReads.retrieve_readsAndVars(sorted(for_read_retrieval_pos),args.bamFile,chrom,
+        vars_in_aread = var_reads.retrieve_vars_inreads(sorted(for_read_retrieval_pos),args.bamFile,chrom,
             for_read_comparison_allinfo)
 
         # read_varlist is the list containing variants from a single read
         for read_varlist in vars_in_aread:
             try:
-                (pr_id, peptide_list) = pepFasta.ReturnVarPep(key,read_varlist,gbk_file,gbk_fileSeq,args.geneticCodeID)
+                (pr_id, peptide_list) = pep_fasta.return_varpep(key,read_varlist,gbk_file,gbk_fileSeq,args.geneticCodeID)
 
             except TypeError:
                 pass
@@ -186,7 +185,7 @@ def main():
 
     # write protein sequences of proteins that had no variants
 
-    protein_id_cds_index = dnaSeq.index_genbank_features(gbk_file, "CDS",
+    protein_id_cds_index = dna_seq.index_genbank_features(gbk_file, "CDS",
                                                   "locus_tag")
     original_pr = set(protein_id_cds_index.keys())
 

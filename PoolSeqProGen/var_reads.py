@@ -12,7 +12,7 @@ __version__ = "0.0.1"
 
 
 
-def retrieve_readsAndVars(pos_list,bamFile,chr,combo_allinfo):
+def retrieve_vars_inreads(pos_list,bamFile,chr,combo_allinfo):
     '''
     Retrieves reads from a sorted bam file that span the genomic positions
     in the 'pos_list' argument using pysam view and retrieves the unique combination 
